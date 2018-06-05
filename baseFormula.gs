@@ -238,8 +238,12 @@ function makeUserRankingsCleanSheet() {
 
       for (var i = 2; i < scoreAggregationSheetLastRow + 1; i++) {
         var tempValue = scoreAggregationSheet.getRange(i, scoreAggregationSheetLastColumn - 3).getValue();
+        Logger.log(tempValue)
         var valueToBeSet = parseFloat(tempValue) * 100;
-        scoreAggregationSheet.getRange(i, scoreAggregationSheetLastColumn + 1).setValue(parseInt(valueToBeSet)));
+        
+        Logger.log(valueToBeSet);
+        scoreAggregationSheet.getRange(i, scoreAggregationSheetLastColumn + 1).setValue(parseInt(valueToBeSet));
+      }
   }
 
   function makeFundValue() {
