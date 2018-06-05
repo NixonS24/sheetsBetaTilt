@@ -238,7 +238,7 @@ function makeUserRankingsCleanSheet() {
 
       for (var i = 2; i < scoreAggregationSheetLastRow + 1; i++) {
         var tempValue = scoreAggregationSheet.getRange(i, scoreAggregationSheetLastColumn - 3).getValue();
-        var valueToBeSet = parseFloat(tempValue) * 1000;
+        var valueToBeSet = parseFloat(tempValue) * 100;
         scoreAggregationSheet.getRange(i, scoreAggregationSheetLastColumn + 1).setValue(parseInt(valueToBeSet)));
   }
 
