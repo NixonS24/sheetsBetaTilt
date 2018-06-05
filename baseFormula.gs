@@ -332,6 +332,12 @@ function makeUserRankingsCleanSheet() {
     var powerVoteDescriptor = 'power_vote';
     var rankStausDescriptor = 'rank_Status';
     var cumulativeScoreDescriptor = 'cumulative_Score';
+    var sectorFocusDescriptor = 'sector_focus';
+    var roiWeekDescriptor = 'roi_1w';
+    var roiMonthDescriptor = 'roi_1m';
+    var roiSixmonthDescriptor = 'roi_6m';
+    var roiAllDescriptor = 'roi_all';
+    var bullBearDescriptor = 'bull_bear';
 
     rankingTableSheet.getRange(1,1).setValue(new Date());
     rankingTableSheet.getRange(2,1).setValue(userIDDescriptor);
@@ -340,6 +346,12 @@ function makeUserRankingsCleanSheet() {
     rankingTableSheet.getRange(2,4).setValue(powerVoteDescriptor);
     rankingTableSheet.getRange(2,5).setValue(rankStausDescriptor);
     rankingTableSheet.getRange(2,6).setValue(cumulativeScoreDescriptor);
+    rankingTableSheet.getRange(2,7).setValue(sectorFocusDescriptor);
+    rankingTableSheet.getRange(2,8).setValue(roiWeekDescriptor);
+    rankingTableSheet.getRange(2,9).setValue(roiMonthDescriptor);
+    rankingTableSheet.getRange(2,10).setValue(roiSixmonthDescriptor);
+    rankingTableSheet.getRange(2,11).setValue(roiAllDescriptor);
+    rankingTableSheet.getRange(2,11).setValue(bullBearDescriptor);
 
     var dataRange = scoreAggregationSheet.getDataRange().getValues();
     Logger.log(dataRange);
