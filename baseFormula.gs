@@ -11,27 +11,29 @@ var tickerRow = 5
 //Creates ID Row and Sums market Sentiment
 function makeUserRankingsCleanSheet() {
 
-  storePreviousDaysRanks();
+  //storePreviousDaysRanks();
 
-  cleanUserInputData();
+  //cleanUserInputData();
 
-  scoreMovement();
+  //scoreMovement();
 
-  var totalScore = setCurrentScore();
+  //var aggregatedUserScore = setCurrentScore();
 
-  rankString();
+  //rankString();
 
-  compareScores();
+  //compareScores();
 
-  fundValue();
+  //fundValue();
 
-  mattPowerVote();
+  //mattPowerVote();
 
-  makeFundValue();
+  makeUserROI(aggregatedUserScore);
 
-  fundValuesForUpload();
+  //makeFundValue();
 
-  userInformationForUpload();
+  //fundValuesForUpload();
+
+  //userInformationForUpload();
 
 
 
@@ -116,13 +118,13 @@ function makeUserRankingsCleanSheet() {
     for (var i = 0; i < previousUserIDObject.length; i++) {
       previousUserIDArray.push(previousUserIDObject[i][0]);
     }
-    var totalScore = 0;
+    var aggregatedUserScore = 0;
     for (var i = 0; i < currentUserIDArray.length; i++){
       for (var j = 0; j < previousUserIDArray.length; j++) {
          if (currentUserIDArray[i] == previousUserIDArray[j]) {
            Logger.log(currentUserIDArray[i] + ' ' + previousUserIDArray[j]);
            var userScore = previousRankingTable.getRange(j + 3, 6).getValue() + parseFloat(scoreAggregationSheet.getRange(i + 2, 3).getValue());
-           totalScore += userScore;
+           aggregatedUserScore += userScore;
            scoreAggregationSheet.getRange(i + 2, scoreAggregationSheetLastColumn + 1).setValue(userScore);
            break;
          } else if (j == previousUserIDArray.length - 1){
@@ -133,7 +135,8 @@ function makeUserRankingsCleanSheet() {
          }
       }
     }
-    return totalScore;
+    return aggregatedUserScore;
+    Logger.log(aggregatedUserScore);
   }
 
   function rankString() {
@@ -211,7 +214,7 @@ function makeUserRankingsCleanSheet() {
     var currentFundScore = fundValueFomattingCSV.getRange(1,2).getValue();
 
     scoreAggregationSheet.getRange(1, scoreAggregationSheetLastColumn + 1).setValue('Fund Value');
-    Logger.log(totalScore);
+
     var lastRow = scoreAggregationSheet.getLastRow();
     var currentRankObject = scoreAggregationSheet.getRange(2, scoreAggregationSheetLastColumn - 1, lastRow - 1, 1).getValues();
     Logger.log(currentRankObject);
@@ -240,10 +243,30 @@ function makeUserRankingsCleanSheet() {
         var tempValue = scoreAggregationSheet.getRange(i, scoreAggregationSheetLastColumn - 3).getValue();
         Logger.log(tempValue)
         var valueToBeSet = parseFloat(tempValue) * 100;
-        
+
         Logger.log(valueToBeSet);
         scoreAggregationSheet.getRange(i, scoreAggregationSheetLastColumn + 1).setValue(parseInt(valueToBeSet));
       }
+  }
+
+
+  function makeUserROI(aggregatedUserScore){
+    var scoreAggregationSheetLastColumn = scoreAggregationSheet.getLastColumn();
+    var scoreAggregationSheetLastRow = scoreAggregationSheet.getLastRow();
+
+    var aggregatedUserScore = 30.74637 //for unit testing only
+
+    scoreAggregationSheet.getRange(1, scoreAggregationSheetLastColumn +  1).setValue('user_contribution');
+
+    // TODO: This function is very similar to the one above so should be refactored in accordance with DRY princples
+
+    for (var i = 2; i < scoreAggregationSheetLastRow + 1; i++) {
+      var tempValue = scoreAggregationSheet.getRange(i, scoreAggregationSheetLastColumn - 4).getValue();
+
+      var valueToBeSet = parseFloat(tempValue) / aggregatedUserScore;
+
+      scoreAggregationSheet.getRange(i, scoreAggregationSheetLastColumn + 1).setValue(valueToBeSet);
+    }
   }
 
   function makeFundValue() {
@@ -336,12 +359,14 @@ function makeUserRankingsCleanSheet() {
     var powerVoteDescriptor = 'power_vote';
     var rankStausDescriptor = 'rank_Status';
     var cumulativeScoreDescriptor = 'cumulative_Score';
-    var sectorFocusDescriptor = 'sector_focus';
-    var roiWeekDescriptor = 'roi_1w';
-    var roiMonthDescriptor = 'roi_1m';
-    var roiSixmonthDescriptor = 'roi_6m';
-    var roiAllDescriptor = 'roi_all';
-    var bullBearDescriptor = 'bull_bear';
+
+    // TODO: Preferred Format to Integrate with Frontend
+    // var sectorFocusDescriptor = 'sector_focus';
+    // var roiWeekDescriptor = 'roi_1w';
+    // var roiMonthDescriptor = 'roi_1m';
+    // var roiSixmonthDescriptor = 'roi_6m';
+    // var roiAllDescriptor = 'roi_all';
+    // var bullBearDescriptor = 'bull_bear';
 
     rankingTableSheet.getRange(1,1).setValue(new Date());
     rankingTableSheet.getRange(2,1).setValue(userIDDescriptor);
@@ -350,12 +375,14 @@ function makeUserRankingsCleanSheet() {
     rankingTableSheet.getRange(2,4).setValue(powerVoteDescriptor);
     rankingTableSheet.getRange(2,5).setValue(rankStausDescriptor);
     rankingTableSheet.getRange(2,6).setValue(cumulativeScoreDescriptor);
-    rankingTableSheet.getRange(2,7).setValue(sectorFocusDescriptor);
-    rankingTableSheet.getRange(2,8).setValue(roiWeekDescriptor);
-    rankingTableSheet.getRange(2,9).setValue(roiMonthDescriptor);
-    rankingTableSheet.getRange(2,10).setValue(roiSixmonthDescriptor);
-    rankingTableSheet.getRange(2,11).setValue(roiAllDescriptor);
-    rankingTableSheet.getRange(2,11).setValue(bullBearDescriptor);
+
+    // TODO: Preferred Format to integrate with Frontend
+    // rankingTableSheet.getRange(2,7).setValue(sectorFocusDescriptor);
+    // rankingTableSheet.getRange(2,8).setValue(roiWeekDescriptor);
+    // rankingTableSheet.getRange(2,9).setValue(roiMonthDescriptor);
+    // rankingTableSheet.getRange(2,10).setValue(roiSixmonthDescriptor);
+    // rankingTableSheet.getRange(2,11).setValue(roiAllDescriptor);
+    // rankingTableSheet.getRange(2,11).setValue(bullBearDescriptor);
 
     var dataRange = scoreAggregationSheet.getDataRange().getValues();
     Logger.log(dataRange);
