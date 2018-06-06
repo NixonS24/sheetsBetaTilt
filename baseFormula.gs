@@ -249,7 +249,6 @@ function makeUserRankingsCleanSheet() {
       }
   }
 
-
   function makeUserROI(aggregatedUserScore){
     var scoreAggregationSheetLastColumn = scoreAggregationSheet.getLastColumn();
     var scoreAggregationSheetLastRow = scoreAggregationSheet.getLastRow();
