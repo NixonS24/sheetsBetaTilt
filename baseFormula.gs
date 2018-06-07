@@ -29,8 +29,6 @@ function makeUserRankingsCleanSheet() {
 
   makeUserROI(aggregatedUserScore);
 
-  makeUserROI(aggregatedUserScore);
-
   makeFundValue();
 
   fundValuesForUpload();
