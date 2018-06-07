@@ -11,29 +11,31 @@ var tickerRow = 5
 //Creates ID Row and Sums market Sentiment
 function makeUserRankingsCleanSheet() {
 
-  //storePreviousDaysRanks();
+  storePreviousDaysRanks();
 
-  //cleanUserInputData();
+  cleanUserInputData();
 
-  //scoreMovement();
+  scoreMovement();
 
-  //var aggregatedUserScore = setCurrentScore();
+  var aggregatedUserScore = setCurrentScore();
 
-  //rankString();
+  rankString();
 
-  //compareScores();
+  compareScores();
 
-  //fundValue();
+  fundValue();
 
-  //mattPowerVote();
+  mattPowerVote();
 
   makeUserROI(aggregatedUserScore);
 
-  //makeFundValue();
+  makeUserROI(aggregatedUserScore);
 
-  //fundValuesForUpload();
+  makeFundValue();
 
-  //userInformationForUpload();
+  fundValuesForUpload();
+
+  userInformationForUpload();
 
 
 
@@ -253,9 +255,9 @@ function makeUserRankingsCleanSheet() {
     var scoreAggregationSheetLastColumn = scoreAggregationSheet.getLastColumn();
     var scoreAggregationSheetLastRow = scoreAggregationSheet.getLastRow();
 
-    var aggregatedUserScore = 30.74637 //for unit testing only
+    //var aggregatedUserScore = 30.74637 //for unit testing only
 
-    scoreAggregationSheet.getRange(1, scoreAggregationSheetLastColumn +  1).setValue('user_contribution');
+    scoreAggregationSheet.getRange(1, scoreAggregationSheetLastColumn +  1).setValue('user_ROI');
 
     // TODO: This function is very similar to the one above so should be refactored in accordance with DRY princples
 
@@ -264,14 +266,16 @@ function makeUserRankingsCleanSheet() {
     for (var i = 2; i < scoreAggregationSheetLastRow + 1; i++) {
       var tempValue = scoreAggregationSheet.getRange(i, scoreAggregationSheetLastColumn - 4).getValue();
 
-      var valueToBeSet = parseFloat(tempValue) / aggregatedUserScore;
-      userContributionScores.append(valueToBeSet);
-
-      scoreAggregationSheet.getRange(i, scoreAggregationSheetLastColumn + 1).setValue(valueToBeSet);
+      var contributionPerUser = parseFloat(tempValue) / aggregatedUserScore;
+      userContributionScores.push(contributionPerUser);
     }
-    Logger.log(userContributionScores);
     var average = getAverage(userContributionScores);
-    Logger.log(average);
+    var stDev = getStandardDeviation(userContributionScores);
+
+    for (var i = 0; i < userContributionScores.length; i++) {
+      var formatString = '=NORMDIST(' + userContributionScores[i] + ',' + average + ',' + stDev + ',TRUE)' + '* 0.079';
+      scoreAggregationSheet.getRange(i + 2, scoreAggregationSheetLastColumn + 1).setValue(formatString);
+    }
   }
 
   function getAverage(array){
@@ -281,6 +285,21 @@ function makeUserRankingsCleanSheet() {
 
     var avg = sum / array.length;
     return avg;
+  }
+
+  function getStandardDeviation(values){
+    var avg = getAverage(values);
+
+    var squareDiffs = values.map(function(value){
+      var diff = value - avg;
+      var sqrDiff = diff * diff;
+      return sqrDiff;
+    });
+
+    var avgSquareDiff = getAverage(squareDiffs);
+
+    var stdDev = Math.sqrt(avgSquareDiff);
+    return stdDev;
   }
 
   function makeFundValue() {
