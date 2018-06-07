@@ -27,11 +27,11 @@ function makeUserRankingsCleanSheet() {
 
   //mattPowerVote();
 
-  //makeUserROI(aggregatedUserScore);
+  makeUserROI(aggregatedUserScore);
 
   //makeFundValue();
 
-  fundValuesForUpload();
+  //fundValuesForUpload();
 
   //userInformationForUpload();
 
@@ -259,13 +259,28 @@ function makeUserRankingsCleanSheet() {
 
     // TODO: This function is very similar to the one above so should be refactored in accordance with DRY princples
 
+    var userContributionScores = [];
+
     for (var i = 2; i < scoreAggregationSheetLastRow + 1; i++) {
       var tempValue = scoreAggregationSheet.getRange(i, scoreAggregationSheetLastColumn - 4).getValue();
 
       var valueToBeSet = parseFloat(tempValue) / aggregatedUserScore;
+      userContributionScores.append(valueToBeSet);
 
       scoreAggregationSheet.getRange(i, scoreAggregationSheetLastColumn + 1).setValue(valueToBeSet);
     }
+    Logger.log(userContributionScores);
+    var average = getAverage(userContributionScores);
+    Logger.log(average);
+  }
+
+  function getAverage(array){
+    var sum = array.reduce(function(sum, value){
+      return sum + value;
+    }, 0);
+
+    var avg = sum / array.length;
+    return avg;
   }
 
   function makeFundValue() {
