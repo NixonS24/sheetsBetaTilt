@@ -27,11 +27,11 @@ function makeUserRankingsCleanSheet() {
 
   //mattPowerVote();
 
-  makeUserROI(aggregatedUserScore);
+  //makeUserROI(aggregatedUserScore);
 
   //makeFundValue();
 
-  //fundValuesForUpload();
+  fundValuesForUpload();
 
   //userInformationForUpload();
 
@@ -270,16 +270,14 @@ function makeUserRankingsCleanSheet() {
 
   function makeFundValue() {
 
-
-
     var scoreAggregationSheetLastRow = scoreAggregationSheet.getLastRow();
     var scoreAggregationSheetLastColumn = scoreAggregationSheet.getLastColumn();
     var currentFundScore = fundValueFomattingCSV.getRange(1,2).getValue();
 
-    var cumulativeVotes = scoreAggregationSheet.getRange(2, scoreAggregationSheetLastColumn - 6, scoreAggregationSheetLastRow - 1, 1).getValues();
+    var cumulativeVotes = scoreAggregationSheet.getRange(2, scoreAggregationSheetLastColumn - 7, scoreAggregationSheetLastRow - 1, 1).getValues();
     Logger.log(cumulativeVotes);
 
-    var fundValue = scoreAggregationSheet.getRange(2, scoreAggregationSheetLastColumn - 1, scoreAggregationSheetLastRow - 1, 1).getValues();
+    var fundValue = scoreAggregationSheet.getRange(2, scoreAggregationSheetLastColumn - 2, scoreAggregationSheetLastRow - 1, 1).getValues();
     Logger.log(fundValue);
 
     var cumulativeMarketMovement = companySheet.getRange(tickerRow + 4, 1).getValue();
@@ -344,11 +342,19 @@ function makeUserRankingsCleanSheet() {
     fundValueFomattingCSV.getRange(1,2).setValue(fundValueFigure);
 
     var fundValueChangeName = 'Fund_Change';
-    var fundValueChangeFigure = companySheet.getRange(tickerRow + 8, 3).getValue();
+    var fundValueChangeFigure = companySheet.getRange(tickerRow + 8, 2).getValue();
+    Logger.log(fundValueChangeFigure);
     var fundValueChangeFigureTwoDecimalPlaces = (fundValueChangeFigure * 100).toFixed(2); //The output figure will be expressed as a percentage to two percentage points, to interact with Matt's system
 
     fundValueFomattingCSV.getRange(2,1).setValue(fundValueChangeName);
     fundValueFomattingCSV.getRange(2,2).setValue(fundValueChangeFigureTwoDecimalPlaces);
+
+    var marketChangeName = 'Market Change';
+    var marketChangeValue = companySheet.getRange(tickerRow + 4, 1).getValue();
+    var marketChangeValueTwoDecimalPlaces = (marketChangeValue * 100).toFixed(2)
+
+    fundValueFomattingCSV.getRange(2,4).setValue(marketChangeName);
+    fundValueFomattingCSV.getRange(2,5).setValue(marketChangeValueTwoDecimalPlaces);
   }
 
   function userInformationForUpload() {
