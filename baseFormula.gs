@@ -507,7 +507,7 @@ function makeUserRankingsCleanSheet() {
 
     var marketChangeValue = companySheet.getRange(tickerRow + 4, 1).getValue();
     var marketChangeValueTwoDecimalPlaces = (marketChangeValue * 100).toFixed(2);
-    mattUploadingValues.getRange(2,4).setValue(marketChangeValueTwoDecimalPlaces);
+    mattUploadingValues.getRange(2,5).setValue(marketChangeValueTwoDecimalPlaces);
 
     var fundRoiFigure = (fundValueFigure - 100000) / 100000 * 100;
     mattUploadingValues.getRange(3,2).setValue(fundRoiFigure);
