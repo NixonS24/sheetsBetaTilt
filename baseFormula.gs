@@ -6,34 +6,37 @@ var rankingTableSheet = ss.getSheetByName('Ranking_Table');
 var companySheet = ss.getSheetByName('Company_Sheet');
 var previousRankingTable = ss.getSheetByName('Previous_Ranking_Table');
 var fundValueFomattingCSV = ss.getSheetByName('Fund Value FormattingCSV');
+var mattUploadingValues = ss.getSheetByName('matt_uploading_values');
 var tickerRow = 5
 
 //Creates ID Row and Sums market Sentiment
 function makeUserRankingsCleanSheet() {
 
-  storePreviousDaysRanks();
+  //storePreviousDaysRanks();
 
-  cleanUserInputData();
+  //cleanUserInputData();
 
-  scoreMovement();
+  //scoreMovement();
 
-  var aggregatedUserScore = setCurrentScore();
+  //var aggregatedUserScore = setCurrentScore();
 
-  rankString();
+  //rankString();
 
-  compareScores();
+  //compareScores();
 
-  fundValue();
+  //fundValue();
 
-  mattPowerVote();
+  //mattPowerVote();
 
-  makeUserROI(aggregatedUserScore);
+  //makeUserROI(aggregatedUserScore);
 
-  makeFundValue();
+  //makeFundValue();
 
-  fundValuesForUpload();
+  //fundValuesForUpload();
 
-  userInformationForUpload();
+  //userInformationForUpload();
+
+  newFrameworkForUpload();
 
 
 
@@ -375,7 +378,6 @@ function makeUserRankingsCleanSheet() {
 
     var fundValueChangeName = 'Fund_Change';
     var fundValueChangeFigure = companySheet.getRange(tickerRow + 8, 2).getValue();
-    Logger.log(fundValueChangeFigure);
     var fundValueChangeFigureTwoDecimalPlaces = (fundValueChangeFigure * 100).toFixed(2); //The output figure will be expressed as a percentage to two percentage points, to interact with Matt's system
 
     fundValueFomattingCSV.getRange(2,1).setValue(fundValueChangeName);
@@ -395,7 +397,15 @@ function makeUserRankingsCleanSheet() {
     var userRankDescriptor = 'rank';
     var powerVoteDescriptor = 'power_vote';
     var rankStausDescriptor = 'rank_Status';
-    var cumulativeScoreDescriptor = 'cumulative_Score';
+    var sectorScoreDescriptor = 'sector_focus';
+    var bullBearDescriptor = 'bull_bear';
+    var userROI_1_DayDescriptor = 'user_roi_1d';
+    var userROI_1_WeekDescriptor = 'user_roi_1w';
+    var userROI_1_MonthDescriptor = 'user_roi_1m';
+    var userROI_6_MonthDescriptor = 'user_roi_6m';
+    var userROI_1_YearDescriptor = 'user_roi_1y';
+    var userROI_AllDescriptor = 'user_roi_all';
+
 
     // TODO: Preferred Format to Integrate with Frontend
     // var sectorFocusDescriptor = 'sector_focus';
@@ -411,7 +421,15 @@ function makeUserRankingsCleanSheet() {
     rankingTableSheet.getRange(2,3).setValue(userRankDescriptor);
     rankingTableSheet.getRange(2,4).setValue(powerVoteDescriptor);
     rankingTableSheet.getRange(2,5).setValue(rankStausDescriptor);
-    rankingTableSheet.getRange(2,6).setValue(cumulativeScoreDescriptor);
+    rankingTableSheet.getRange(2,6).setValue(sectorScoreDescriptor);
+    rankingTableSheet.getRange(2,7).setValue(bullBearDescriptor);
+    rankingTableSheet.getRange(2,8).setValue(userROI_1_DayDescriptor);
+    rankingTableSheet.getRange(2,9).setValue(userROI_1_WeekDescriptor);
+    rankingTableSheet.getRange(2,10).setValue(userROI_1_MonthDescriptor);
+    rankingTableSheet.getRange(2,11).setValue(userROI_6_MonthDescriptor);
+    rankingTableSheet.getRange(2,12).setValue(userROI_1_YearDescriptor);
+    rankingTableSheet.getRange(2,12).setValue(userROI_AllDescriptor);
+
 
     // TODO: Preferred Format to integrate with Frontend
     // rankingTableSheet.getRange(2,7).setValue(sectorFocusDescriptor);
@@ -435,10 +453,67 @@ function makeUserRankingsCleanSheet() {
         rankingTableSheet.getRange(i + 2, 3).setValue(dataRange[i][4]);
         rankingTableSheet.getRange(i + 2, 4).setValue(dataRange[i][7]);
         rankingTableSheet.getRange(i + 2, 5).setValue(dataRange[i][5]);
-        rankingTableSheet.getRange(i + 2, 6).setValue(dataRange[i][3]);
+        //rankingTableSheet.getRange(i + 2, 6).setValue(dataRange[i][3]);
 
     }
   }
+
+  function newFrameworkForUpload() {
+
+    var nameDescriptors = {
+      FundValueDescriptor:'Fund_Value',
+      FundChangeDescriptor: 'Fund_Change',
+      FundRoiDescriptor: 'Fund_ROI',
+      MarketChangeDescriptor: 'Market Change',
+      TotalInvestorDescriptor: 'total_investors',
+      TotalStockCount: [
+        {Descriptor: 'total_stock_count'},
+        {Values: '122'},
+      ],
+      AverageStockDescriptor: 'average_stock_',
+      ROI_1_DayDescriptor: 'roi_1d',
+      ROI_1_WeekDescriptor: 'roi_1w',
+      ROI_1_MonthDescriptor: 'roi_1m',
+      ROI_6_MonthDescriptor: 'roi_6m',
+      ROI_1_YearDescriptor: 'roi_1y',
+      ROI_AllDescriptor: 'roi_all',
+    };
+
+    var dataRange = mattUploadingValues.getDataRange();
+    dataRange.clear();
+
+    mattUploadingValues.getRange(1,1).setValue(nameDescriptors.FundValueDescriptor);
+
+    mattUploadingValues.getRange(2,1).setValue(nameDescriptors.FundChangeDescriptor);
+    mattUploadingValues.getRange(3,1).setValue(nameDescriptors.FundRoiDescriptor);
+    mattUploadingValues.getRange(2,4).setValue(nameDescriptors.MarketChangeDescriptor);
+    mattUploadingValues.getRange(4,1).setValue(nameDescriptors.TotalInvestorDescriptor);
+    mattUploadingValues.getRange(5,1).setValue(nameDescriptors.TotalStockCount[0].Descriptor);
+    mattUploadingValues.getRange(5,2).setValue(nameDescriptors.TotalStockCount[1].Values);
+    mattUploadingValues.getRange(6,1).setValue(nameDescriptors.AverageStockDescriptor);
+    mattUploadingValues.getRange(8,1).setValue(nameDescriptors.ROI_1_DayDescriptor);
+    mattUploadingValues.getRange(9,1).setValue(nameDescriptors.ROI_1_WeekDescriptor);
+    mattUploadingValues.getRange(10,1).setValue(nameDescriptors.ROI_1_MonthDescriptor);
+    mattUploadingValues.getRange(11,1).setValue(nameDescriptors.ROI_6_MonthDescriptor);
+    mattUploadingValues.getRange(12,1).setValue(nameDescriptors.ROI_1_YearDescriptor);
+    mattUploadingValues.getRange(13,1).setValue(nameDescriptors.ROI_AllDescriptor);
+
+    var fundValueFigure = companySheet.getRange(tickerRow + 7, 2).getValue();
+    mattUploadingValues.getRange(1,2).setValue(fundValueFigure);
+
+    var fundValueChangeFigure = companySheet.getRange(tickerRow + 8, 2).getValue();
+    var fundValueChangeFigureTwoDecimalPlaces = (fundValueChangeFigure * 100).toFixed(2); //The output figure will be expressed as a percentage to two percentage points, to interact with Matt's system
+    mattUploadingValues.getRange(2,2).setValue(fundValueChangeFigureTwoDecimalPlaces);
+
+    var marketChangeValue = companySheet.getRange(tickerRow + 4, 1).getValue();
+    var marketChangeValueTwoDecimalPlaces = (marketChangeValue * 100).toFixed(2);
+    mattUploadingValues.getRange(2,4).setValue(marketChangeValueTwoDecimalPlaces);
+
+    var fundRoiFigure = (fundValueFigure - 100000) / 100000 * 100;
+    mattUploadingValues.getRange(3,2).setValue(fundRoiFigure);
+
+  }
+
 
 }
 
