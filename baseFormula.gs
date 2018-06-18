@@ -12,29 +12,29 @@ var tickerRow = 5
 //Creates ID Row and Sums market Sentiment
 function makeUserRankingsCleanSheet() {
 
-  //storePreviousDaysRanks();
+  storePreviousDaysRanks();
 
-  //cleanUserInputData();
+  cleanUserInputData();
 
-  //scoreMovement();
+  scoreMovement();
 
-  //var aggregatedUserScore = setCurrentScore();
+  var aggregatedUserScore = setCurrentScore();
 
-  //rankString();
+  rankString();
 
-  //compareScores();
+  compareScores();
 
-  //fundValue();
+  fundValue();
 
-  //mattPowerVote();
+  mattPowerVote();
 
-  //makeUserROI(aggregatedUserScore);
+  makeUserROI(aggregatedUserScore);
 
-  //makeFundValue();
+  makeFundValue();
 
-  //fundValuesForUpload();
+  fundValuesForUpload();
 
-  //userInformationForUpload();
+  userInformationForUpload();
 
   newFrameworkForUpload();
 
@@ -397,6 +397,7 @@ function makeUserRankingsCleanSheet() {
     var userRankDescriptor = 'rank';
     var powerVoteDescriptor = 'power_vote';
     var rankStausDescriptor = 'rank_Status';
+    var cumulativeScoreDescriptor = 'cumulative_score';
     var sectorScoreDescriptor = 'sector_focus';
     var bullBearDescriptor = 'bull_bear';
     var userROI_1_DayDescriptor = 'user_roi_1d';
@@ -421,14 +422,15 @@ function makeUserRankingsCleanSheet() {
     rankingTableSheet.getRange(2,3).setValue(userRankDescriptor);
     rankingTableSheet.getRange(2,4).setValue(powerVoteDescriptor);
     rankingTableSheet.getRange(2,5).setValue(rankStausDescriptor);
-    rankingTableSheet.getRange(2,6).setValue(sectorScoreDescriptor);
-    rankingTableSheet.getRange(2,7).setValue(bullBearDescriptor);
-    rankingTableSheet.getRange(2,8).setValue(userROI_1_DayDescriptor);
-    rankingTableSheet.getRange(2,9).setValue(userROI_1_WeekDescriptor);
-    rankingTableSheet.getRange(2,10).setValue(userROI_1_MonthDescriptor);
-    rankingTableSheet.getRange(2,11).setValue(userROI_6_MonthDescriptor);
-    rankingTableSheet.getRange(2,12).setValue(userROI_1_YearDescriptor);
-    rankingTableSheet.getRange(2,12).setValue(userROI_AllDescriptor);
+    rankingTableSheet.getRange(2,6).setValue(cumulativeScoreDescriptor);
+    rankingTableSheet.getRange(2,7).setValue(sectorScoreDescriptor);
+    rankingTableSheet.getRange(2,8).setValue(bullBearDescriptor);
+    rankingTableSheet.getRange(2,9).setValue(userROI_1_DayDescriptor);
+    rankingTableSheet.getRange(2,10).setValue(userROI_1_WeekDescriptor);
+    rankingTableSheet.getRange(2,11).setValue(userROI_1_MonthDescriptor);
+    rankingTableSheet.getRange(2,12).setValue(userROI_6_MonthDescriptor);
+    rankingTableSheet.getRange(2,13).setValue(userROI_1_YearDescriptor);
+    rankingTableSheet.getRange(2,14).setValue(userROI_AllDescriptor);
 
 
     // TODO: Preferred Format to integrate with Frontend
@@ -453,7 +455,7 @@ function makeUserRankingsCleanSheet() {
         rankingTableSheet.getRange(i + 2, 3).setValue(dataRange[i][4]);
         rankingTableSheet.getRange(i + 2, 4).setValue(dataRange[i][7]);
         rankingTableSheet.getRange(i + 2, 5).setValue(dataRange[i][5]);
-        //rankingTableSheet.getRange(i + 2, 6).setValue(dataRange[i][3]);
+        rankingTableSheet.getRange(i + 2, 6).setValue(dataRange[i][3]);
 
     }
   }
